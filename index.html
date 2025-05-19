@@ -3,82 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2025 Team Schedules | Blue Dolphins, G-Dash, KCA Blue</title>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css" rel="stylesheet">
+    <title>2025 Team Game Schedules</title>
     <style>
-        :root {
-            --blue-dolphins: #3498db;
-            --g-dash: #ff9ff3;
-            --kca-blue: #2ecc71;
-        }
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             line-height: 1.6;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f8f9fa;
+            background-color: #f5f5f5;
         }
         header {
             background: linear-gradient(135deg, #1e5799, #207cca);
             color: white;
-            padding: 2rem 0;
+            padding: 25px 0;
             text-align: center;
             border-radius: 8px;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
         }
         h1 {
             margin: 0;
-            font-size: 2.2rem;
+            font-size: 2rem;
         }
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 1.5rem;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
+        .schedule-container {
             background: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-        }
-        #calendar {
-            background: white;
-            padding: 1.5rem;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow-x: auto;
         }
-        .fc-event {
-            cursor: pointer;
-            font-size: 0.85em;
-            padding: 2px 4px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
         }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2c3e50;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .team-badge {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .blue-dolphins { background-color: #3498db; }
+        .g-dash { background-color: #ff9ff3; }
+        .kca-blue { background-color: #2ecc71; }
         footer {
             text-align: center;
-            margin-top: 2rem;
-            color: #6c757d;
+            margin-top: 30px;
+            color: #777;
             font-size: 0.9rem;
         }
         @media (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
-            header {
-                padding: 1.5rem 0;
-            }
-            h1 {
-                font-size: 1.8rem;
+            th, td {
+                padding: 8px 10px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -88,86 +80,59 @@
         <h1>2025 Team Game Schedules</h1>
     </header>
 
-    <div class="legend">
-        <div class="legend-item">
-            <div class="legend-color" style="background-color: var(--blue-dolphins);"></div>
-            <span>Blue Dolphins</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background-color: var(--g-dash);"></div>
-            <span>G-Dash 2014</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background-color: var(--kca-blue);"></div>
-            <span>KCA Blue 14G</span>
-        </div>
+    <div class="schedule-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Team</th>
+                    <th>Opponent</th>
+                    <th>Location</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>March 15, 2025</td>
+                    <td><span class="team-badge blue-dolphins"></span> Blue Dolphins</td>
+                    <td>River Sharks</td>
+                    <td>Main Field</td>
+                    <td>10:00 AM</td>
+                </tr>
+                <tr>
+                    <td>March 22, 2025</td>
+                    <td><span class="team-badge g-dash"></span> G-Dash 2014</td>
+                    <td>Lightning Bolts</td>
+                    <td>North Field</td>
+                    <td>2:00 PM</td>
+                </tr>
+                <tr>
+                    <td>April 5, 2025</td>
+                    <td><span class="team-badge kca-blue"></span> KCA Blue 14G</td>
+                    <td>Golden Eagles</td>
+                    <td>South Field</td>
+                    <td>11:00 AM</td>
+                </tr>
+                <!-- Add more games as needed -->
+            </tbody>
+        </table>
     </div>
 
-    <div id="calendar"></div>
-
     <footer>
-        <p>Automatically updated from PlayMetrics • Last sync: <span id="last-updated"></span></p>
+        <p>Last updated: <span id="update-date">June 10, 2024</span></p>
     </footer>
 
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.9/main.global.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Update timestamp
-            document.getElementById('last-updated').textContent = new Date().toLocaleString();
-            
-            // Initialize calendar
-            const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
-                plugins: [FullCalendarIcalendarPlugin],
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,listWeek'
-                },
-                eventSources: [
-                    {
-                        url: 'https://calendar.google.com/calendar/ical/dh9kv8cdpvk83jqdar8nvllr1rd5416n%40import.calendar.google.com/public/basic.ics',
-                        color: 'var(--blue-dolphins)',
-                        extraParams: {
-                            calendarName: 'Blue Dolphins'
-                        }
-                    },
-                    {
-                        url: 'https://calendar.google.com/calendar/ical/uts2017bg9itbj6kjojl0vsplifimp0l%40import.calendar.google.com/public/basic.ics',
-                        color: 'var(--g-dash)',
-                        extraParams: {
-                            calendarName: 'G-Dash 2014'
-                        }
-                    },
-                    {
-                        url: 'https://calendar.google.com/calendar/ical/d3505skebe970u0go16h7mo4iaao03oq%40import.calendar.google.com/public/basic.ics',
-                        color: 'var(--kca-blue)',
-                        extraParams: {
-                            calendarName: 'KCA Blue 14G'
-                        }
-                    }
-                ],
-                eventClick: function(info) {
-                    info.jsEvent.preventDefault();
-                    alert(
-                        `${info.event.extendedProps.calendarName} Game\n` +
-                        `📅 ${info.event.start.toLocaleDateString()}\n` +
-                        `⏰ ${info.event.start.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}\n` +
-                        `🏟️ ${info.event.title}\n` +
-                        (info.event.extendedProps.location ? `📍 ${info.event.extendedProps.location}` : '')
-                    );
-                }
-            });
-            calendar.render();
-            
-            // Auto-refresh every 6 hours
-            setInterval(() => {
-                calendar.refetchEvents();
-                document.getElementById('last-updated').textContent = new Date().toLocaleString();
-            }, 6 * 60 * 60 * 1000);
+        // Simple script to show current date
+        document.getElementById('update-date').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         });
+        
+        // Remove any problematic extensions
+        const badScripts = document.querySelectorAll('script[src*="chrome-extension://"]');
+        badScripts.forEach(script => script.remove());
     </script>
 </body>
 </html>
