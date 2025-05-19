@@ -1,79 +1,91 @@
-<iframe src="https://calendar.google.com/calendar/embed?src=d3505skebe970u0go16h7mo4iaao03oq%40import.calendar.google.com&ctz=America%2FNew_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soccer Game Schedule</title>
+    <title>Team Game Schedule</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.11.3/main.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-        header {
-            background-color: #3498db;
-            color: white;
-            text-align: center;
-            padding: 1rem;
-        }
-        .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
-        .calendar-container {
-            position: relative;
-            padding-bottom: 75%;
-            height: 0;
-            overflow: hidden;
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        #calendar {
             margin-top: 20px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
         }
-        .calendar-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-        .instructions {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
+        .last-updated {
+            text-align: center;
+            color: #7f8c8d;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Team Soccer Schedule</h1>
-    </header>
-    
-    <div class="container">
-        <div class="instructions">
-            <h2>Welcome to our team schedule page!</h2>
-            <p>Below you'll find our upcoming games and practices. The calendar updates automatically whenever our schedule changes in PlayMetrics.</p>
-        </div>
-        
-        <div class="calendar-container">
-            <!-- REPLACE THIS URL with your public calendar URL from PlayMetrics -->
-            <iframe src="https://calendar.google.com/calendar/embed?src=d3505skebe970u0go16h7mo4iaao03oq%40import.calendar.google.com&ctz=America%2FNew_York" frameborder="0"></iframe>
-        </div>
-    </div>
-    
-    <footer>
-        <div class="container" style="text-align: center; padding: 20px 0; font-size: 0.9em; color: #666;">
-            <p>Last updated: <span id="last-updated"></span></p>
-        </div>
-    </footer>
+    <h1>⚽ Team Game Schedule</h1>
+    <div id="calendar"></div>
+    <p class="last-updated">Last updated: <span id="update-time"></span></p>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.11.3/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@5.11.3/main.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.11.3/main.global.min.js"></script>
 
     <script>
-        // Show the last updated date
-        document.getElementById('last-updated').textContent = new Date().toLocaleDateString();
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            const updateTimeEl = document.getElementById('update-time');
+            
+            // Update timestamp
+            updateTimeEl.textContent = new Date().toLocaleString();
+            
+            // Initialize calendar
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: [FullCalendar.dayGridPlugin, FullCalendar.icalPlugin],
+                initialView: 'dayGridMonth',
+                height: 'auto',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek'
+                },
+                events: [
+                    // First team's games
+                    {
+                        url: 'https://api.playmetrics.com/calendar/564/team/228854-51FC1D4E.ics?filter=games',
+                        format: 'ics'
+                    },
+                    // Second team's games
+                    {
+                        url: 'https://api.playmetrics.com/calendar/564/team/282675-C6F0B6CE.ics?filter=games',
+                        format: 'ics'
+                    }
+                ],
+                eventClick: function(info) {
+                    // Show event details when clicked
+                    alert(
+                        'Game Details:\n\n' +
+                        'Team: ' + (info.event.extendedProps.team || 'N/A') + '\n' +
+                        'Date: ' + info.event.start.toLocaleString() + '\n' +
+                        'Location: ' + (info.event.extendedProps.location || 'TBD') + '\n' +
+                        'Opponent: ' + (info.event.title || 'TBD')
+                    );
+                }
+            });
+            
+            calendar.render();
+            
+            // Refresh data every 12 hours
+            setInterval(() => {
+                calendar.refetchEvents();
+                updateTimeEl.textContent = new Date().toLocaleString();
+            }, 12 * 60 * 60 * 1000);
+        });
     </script>
 </body>
 </html>
